@@ -1,0 +1,6 @@
+version: "2"
+services:
+  server:
+    image: nonchalant/vapor-server:16.04
+    ports:
+      - "80:8080"
