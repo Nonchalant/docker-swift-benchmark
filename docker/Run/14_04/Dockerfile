@@ -1,14 +1,10 @@
-FROM ubuntu:14.04
+FROM ubuntu:14.04 as builder
 MAINTAINER afrontier829@gmail.com
 
 # Install related packages
 RUN apt-get -q update && \
     apt-get -q install -y \
     curl \
-    libcurl4-openssl-dev \
-    libedit-dev \
-    libicu-dev \
-    libxml2 \
     && rm -r /var/lib/apt/lists/*
 
 # Everything up to here should cache nicely between Swift versions, assuming dev dependencies change little
@@ -26,3 +22,20 @@ RUN SWIFT_URL=https://swift.org/builds/$SWIFT_BRANCH/$(echo "$SWIFT_PLATFORM" | 
     && tar -xzf swift.tar.gz --directory / --strip-components=1 \
     && rm -r swift.tar.gz \
     && chmod -R o+r /usr/lib/swift
+
+
+FROM ubuntu:14.04
+MAINTAINER afrontier829@gmail.com
+
+# Install related packages
+RUN apt-get -q update && \
+    apt-get -q install -y \
+    curl \
+    libcurl4-openssl-dev \
+    libedit-dev \
+    libicu-dev \
+    libxml2 \
+    && rm -r /var/lib/apt/lists/*
+
+COPY --from=builder /usr/lib/swift /usr/lib/swift
+RUN chmod -R o+r /usr/lib/swift
