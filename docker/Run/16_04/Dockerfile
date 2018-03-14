@@ -30,7 +30,6 @@ MAINTAINER afrontier829@gmail.com
 # Install related packages
 RUN apt-get -q update && \
     apt-get -q install -y \
-    curl \
     libcurl4-openssl-dev \
     libedit-dev \
     libicu-dev \
